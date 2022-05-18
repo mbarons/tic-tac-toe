@@ -1,0 +1,40 @@
+body {
+  background-color: #111a29;
+  font-family: 'Signika', sans-serif;
+}
+
+.game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 200px;
+}
+
+.gameboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: stretch;
+}
+
+.tile {
+  display: grid;
+  border: 1px rgb(156, 154, 154) solid;
+  height: 150px;
+  width: 150px;
+  font-size: 130px;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  color: #a6c53f;
+}
+
+.tile.cpu{
+  color: rgb(228, 113, 132);
+}
+
+.result {
+  color: white;
+  margin: 30px;
+  font-size: 30px;
+}
