@@ -23,6 +23,38 @@ const Player = (symbol) => {
   return { symbol };
 };
 
+const reset = ((board) => {
+  const reset = () => {
+ 
+}
+  return {reset};
+});
+
+const playAgain = (() => {
+  let playAgainContainer = document.querySelector(".play-again-container");
+  let playAgainButton = document.createElement("button");
+
+  const showButton = () => {
+  playAgainButton.textContent = "Play Again";
+  playAgainButton.classList.add("play-again");
+  playAgainContainer.appendChild(playAgainButton);
+}
+  const resetTile = (tile) => {
+    tile.textContent = "";
+  }
+  const reset = () => {
+    gameFlow.board.forEach(tile => resetTile(tile));
+    playAgainContainer.removeChild(playAgainButton);
+    gameboard.resultContainer.textContent = "";
+  }
+
+  const click = () => {
+    playAgainButton.addEventListener("click", reset)
+  }
+
+return {showButton, reset, click};
+})();
+
 const gameFlow = (() => {
   let board = gameboard.board; //store the array of tiles
   let winningRows = gameboard.rows; //store winning rows
@@ -50,13 +82,11 @@ const gameFlow = (() => {
     return over; //return over
   };
   const display = () => {
-    let i = 1; //define a counter to alternate between players
     for (let tile of board) {
       // add click event for every tile
       tile.addEventListener("click", () => {
         if (checkIfTie(board, winningRows)) { //If tie do nothing
         } else {
-          if (i == 1) {
             if (tile.textContent != "") {
             } //if the tile clicked is different than empty, do nothing.
             else {
@@ -64,14 +94,19 @@ const gameFlow = (() => {
               } //if the game is already over, do nothing.
               else {
                 tile.textContent = player1.symbol;
-                i++; //if game not over, prints player1 symbol and change the counter to alternate to cpu
+                tile.classList.add("player");
+                tile.classList.remove("cpu");
                 if (checkIfOver(winningRows)) {
                   gameboard.resultContainer.textContent = "You Won"; //if the game is over this turn, prints the winner
+                  playAgain.showButton();
+                  playAgain.click();
                 }
                 if (checkIfTie(board, winningRows)) {
                   gameboard.resultContainer.textContent = "That was a tie!"; //If tie prints tie;
+                  playAgain.showButton();
+                  playAgain.click();
               }
-            }
+            
           } //the code below is to generate a random play for cpu
             let random;
             do {
@@ -80,21 +115,23 @@ const gameFlow = (() => {
             if (checkIfTie(board, winningRows)){break};
           }
             while (board[random].textContent != "");
-            if (checkIfOver(winningRows)) {
+            if (checkIfOver(winningRows) || checkIfTie(board, winningRows)) {
             } 
             else {
             board[random].textContent = cpu.symbol;
             board[random].classList.add("cpu");
-            i--;
+            board[random].classList.remove("player");
             if (checkIfOver(winningRows)) {
               gameboard.resultContainer.textContent = "CPU Won";
+              playAgain.showButton();
+              playAgain.click();
                 }
               }
-          }
-        }
+          
+        }}
       });
     }
   };
-  return { display };
+  return { display, board };
 })();
 gameFlow.display();

@@ -33,8 +33,21 @@ body {
   color: rgb(228, 113, 132);
 }
 
+.tile.player {
+  color: #a6c53f;
+}
+
 .result {
   color: white;
   margin: 30px;
   font-size: 30px;
+}
+
+.play-again {
+  background-color: #a6c53f;
+  font-size: 20px;
+  border-radius: 20px;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
 }
