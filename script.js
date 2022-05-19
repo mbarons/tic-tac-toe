@@ -27,14 +27,13 @@ const gameFlow = (() => {
   let board = gameboard.board; //store the array of tiles
   let winningRows = gameboard.rows; //store winning rows
   let player1 = Player("×");
-  let player2 = Player("○");
+  let cpu = Player("○");
 
   const checkIfTie = (board, rows) => {
     if (board.every((tile) => tile.textContent != "" ) && checkIfOver(rows) === false) { //if every tile is not empty and there is not a winner, returns true for a tie.
       return true;
     }
   };
-
   const checkIfOver = (board) => {
     let over = false;
     for (z = 0; z <= board.length - 1; z++) {
@@ -50,7 +49,6 @@ const gameFlow = (() => {
     }
     return over; //return over
   };
-
   const display = () => {
     let i = 1; //define a counter to alternate between players
     for (let tile of board) {
@@ -66,36 +64,37 @@ const gameFlow = (() => {
               } //if the game is already over, do nothing.
               else {
                 tile.textContent = player1.symbol;
-                i++; //if game not over, prints player1 symbol and change the counter to alternate to player2
+                i++; //if game not over, prints player1 symbol and change the counter to alternate to cpu
                 if (checkIfOver(winningRows)) {
-                  gameboard.resultContainer.textContent = "Player1 Won"; //if the game is over this turn, prints the winner
+                  gameboard.resultContainer.textContent = "You Won"; //if the game is over this turn, prints the winner
                 }
+                if (checkIfTie(board, winningRows)) {
+                  gameboard.resultContainer.textContent = "That was a tie!"; //If tie prints tie;
               }
             }
-          } else if (i == 2) {
-            //this is the same as above, but for player2
-            if (tile.textContent != "") {
-            } else {
-              if (checkIfOver(winningRows)) {
-              } else {
-                tile.textContent = player2.symbol;
-                tile.classList.add("cpu");
-                i--;
-                if (checkIfOver(winningRows)) {
-                  gameboard.resultContainer.textContent = "Player2 Won";
-                }
-              }
-            }
+          } //the code below is to generate a random play for cpu
+            let random;
+            do {
+            random = Math.floor(Math.random() * 9);
+            if (checkIfOver(winningRows)){break}
+            if (checkIfTie(board, winningRows)){break};
           }
-          if (checkIfTie(board, winningRows)) {
-            gameboard.resultContainer.textContent = "TIE"; //If tie prints tie;
+            while (board[random].textContent != "");
+            if (checkIfOver(winningRows)) {
+            } 
+            else {
+            board[random].textContent = cpu.symbol;
+            board[random].classList.add("cpu");
+            i--;
+            if (checkIfOver(winningRows)) {
+              gameboard.resultContainer.textContent = "CPU Won";
+                }
+              }
           }
         }
       });
     }
   };
-
   return { display };
 })();
-
 gameFlow.display();
